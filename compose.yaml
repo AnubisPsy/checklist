@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    mem_limit: 256m
+    environment:
+      DATABASE_URL: ${DATABASE_URL:?Define DATABASE_URL en .env}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  web:
+    build: ./frontend
+    restart: unless-stopped
+    mem_limit: 64m
+    ports:
+      - "2020:80"
+    depends_on:
+      - backend
